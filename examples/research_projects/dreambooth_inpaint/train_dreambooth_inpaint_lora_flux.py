@@ -1324,8 +1324,8 @@ def main(args):
     )
     noise_scheduler_copy = copy.deepcopy(noise_scheduler)
     text_encoder_one, text_encoder_two = load_text_encoders(text_encoder_cls_one, text_encoder_cls_two, torch_dtype=weight_dtype)
-    text_encoder_one.to(accelerator.device)
-    text_encoder_two.to(accelerator.device)
+    # text_encoder_one.to(accelerator.device)
+    # text_encoder_two.to(accelerator.device)
 
     vae = AutoencoderKL.from_pretrained(
         args.pretrained_model_name_or_path,
@@ -1923,7 +1923,7 @@ def main(args):
                     width=model_input.shape[3],
                 )
                 print("packed masked image latents", masked_image_latents.shape)
-                print("model input", model_input)
+                # print("model input", model_input)
                 print("model inputhshae", model_input.shape)
                 mask = FluxFillPipeline._pack_latents(
                     mask,
@@ -2047,7 +2047,7 @@ def main(args):
             if args.validation_prompt is not None and epoch % args.validation_epochs == 0:
                 # create pipeline
                 if not args.train_text_encoder:
-                    text_encoder_one, text_encoder_two = load_text_encoders(text_encoder_cls_one, text_encoder_cls_two)
+                    text_encoder_one, text_encoder_two = load_text_encoders(text_encoder_cls_one, text_encoder_cls_two, torch_dtype=weight_dtype)
                     text_encoder_one.to(weight_dtype)
                     text_encoder_two.to(weight_dtype)
                 pipeline = FluxFillPipeline.from_pretrained(

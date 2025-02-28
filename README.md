@@ -104,6 +104,37 @@ accelerate launch train_dreambooth_inpaint_lora_flux.py \
   --push_to_hub
 ```
 
+For lower GPU memory cost:
+
+```bash
+export MODEL_NAME="black-forest-labs/FLUX.1-Fill-dev"
+export INSTANCE_DIR="dog"
+export OUTPUT_DIR="trained-flux"
+
+accelerate launch train_dreambooth_inpaint_lora_flux.py \
+  --pretrained_model_name_or_path=$MODEL_NAME  \
+  --instance_data_dir=$INSTANCE_DIR \
+  --output_dir=$OUTPUT_DIR \
+  --mixed_precision="bf16" \
+  --instance_prompt="A character turnaround 45-degreed to the left" \
+  --resolution=1024 \
+  --train_batch_size=1 \
+  --guidance_scale=1 \
+  --gradient_accumulation_steps=4 \
+  --gradient_checkpointing \
+  --optimizer="AdamW" \
+  --use_8bit_adam \
+  --learning_rate=1e-3 \
+  --report_to="tensorboard" \
+  --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
+  --max_train_steps=500 \
+  --rank 64 \
+  --validation_prompt="A character turnaround 45-degreed to the left" \
+  --validation_epochs=25 \
+  --seed="0" \
+```
+
 ## Contributions and Feedback
 As you might have noticed there is a lot of room for improvement 🙃. Feel free to open issues or submit pull requests to improve this project. If you have insights on adapting this script for other frameworks like SimpleTuner, please share your experiences!
  
